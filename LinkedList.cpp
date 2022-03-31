@@ -9,14 +9,15 @@ LinkedList<T>::LinkedList(){
 
 template <class T>
 LinkedList<T>::~LinkedList(){
-    ListNode<T>* current = front;
-    while(current != NULL) {
-        ListNode<T> *next1 = current->next;
-        current->~ListNode();
-        current = next1;
+    ListNode<T> *node = front;
+    ListNode<T> *nodeToDelete = front;
+    while(node != NULL) {
+        nodeToDelete = node->next;
+        delete node;
+        node = nodeToDelete;
     }
-    delete front;
-    delete back;
+    //delete front;
+ //   delete back;
 }
 
 template <class T>
@@ -26,7 +27,11 @@ void LinkedList<T>::insertFront(T d){
     if(isEmpty()){
         back = node;
     }
-    node->next = front; //if empty, makes next null, and then front points to same node as back. 
+    else{
+        //not empty
+        node->next = front;
+        front->prev = node;
+    }
     front = node;
     size++;
 }
@@ -39,6 +44,7 @@ void LinkedList<T>::insertBack(T d){
         front = node;
     }
     else{
+        node->prev = back;
         back->next = node;
     }
     back = node;
@@ -54,44 +60,50 @@ template <class T>
 T LinkedList<T>::removeFront(){
     
     if(isEmpty()){
-        cout << "List is Empty" << endl;
-        return -1;
+        throw runtime_error("List is empty");
     }
-    else if(size==1){
+
+    ListNode<T> *temp = front;
+    
+    if(front->next == NULL){
         back = NULL;
     }
-
-    int temp = front->data;
-    ListNode<T> *ft = front;
+    else{
+        //more than one node in the list
+        front->next->prev = NULL;
+    }
 
     front = front->next;
-    ft->next = NULL;
-    delete ft;
-
-    size--;
-    return temp;
+    temp->next = NULL;
+    int data = temp->data;
+    --size;
+    delete temp;
+    return data;
 }
 
-//do removeBack() ??
 
 template <class T>
 T LinkedList<T>::removeBack(){
     if(isEmpty()){
-        cout << "List is Empty" << endl;
-        return -1;
+        throw runtime_error("List is empty");
     }
-    else if(size==1){
+    ListNode<T> *temp = front;
+
+    if(back->prev == NULL){
+        //only node in the list
         front = NULL;
     }
-
-     int temp = back->data;
-     ListNode<T> *bt = NULL;
-     bt->next = back;
-     back = bt;
-     delete bt;
+    else{
+        //more than one node in the list
+        back->prev->next = NULL;
+    }
+    back = back->prev;
+    temp->prev = NULL;
+    int data = temp->data;
+    --size;
+    delete temp;
+    return data;
     
-    size--;
-    return temp;
 }
 
 template <class T>
@@ -140,7 +152,9 @@ T LinkedList<T>::deleteAtPos(int pos){
 }
 
 template <class T>
-T LinkedList<T>::findAtPos(int val){
-
+unsigned int LinkedList<T>::getSize(){
+    return size;
 }
+
 template class LinkedList<int>;
+template class LinkedList<char>;

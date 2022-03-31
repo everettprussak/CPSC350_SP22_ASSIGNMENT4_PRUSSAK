@@ -18,7 +18,6 @@ class LinkedList{
         T removeFront();
         T removeBack();
         T find(T value); //value that we are looking for
-        T findAtPos(int val);
         bool isEmpty();
         unsigned int getSize();
         T deleteAtPos(int pos); //the position of the node, and delete it

@@ -12,6 +12,7 @@ class ListNode{
         ListNode(T d);
         T data;
         ListNode *next;  //just an address
+        ListNode *prev;
 };
 
 #endif

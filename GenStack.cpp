@@ -34,8 +34,6 @@ T GenStack<T>::pop(){
   if(isEmpty()){
     throw runtime_error("stack is empty");
   }
-  /*top = top->next;
-  T rem = code->removeFront(); */
   
   top = top->next;
   T rem = code->removeFront();
@@ -63,3 +61,4 @@ int GenStack<T>::getSize(){
 }
 
 template class GenStack<int>;
+template class GenStack<char>;
