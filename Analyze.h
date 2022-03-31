@@ -4,6 +4,10 @@
 #include "GenStack.h"
 using namespace std;
 
+
+/*
+Basic header class for Analyze
+*/
 template <class T>
 class Analyze{
     private:

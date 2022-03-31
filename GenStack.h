@@ -2,6 +2,10 @@
 #define GENSTACK_H
 #include "LinkedList.h"
 
+
+/*
+header class for GenStack
+*/
 template <class T>
 class GenStack{
   public:
@@ -18,9 +22,9 @@ class GenStack{
     int getSize();
 
   private:
-    ListNode<T> *top;
-    LinkedList<T> *code;
-    int size;
+    ListNode<T> *top; //top in our stack
+    LinkedList<T> *code; //main LinkedList behind our stack
+    int size; //size of stack
 };
 
 

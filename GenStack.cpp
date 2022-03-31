@@ -1,6 +1,8 @@
 #include "GenStack.h"
 #include <exception>
 
+
+//Constructorof Genstack where size is 0, and code is created, and top is NULL
 template <class T>
 GenStack<T>::GenStack(){
   size = 0;
@@ -11,32 +13,32 @@ GenStack<T>::GenStack(){
 template <class T>
 GenStack<T>::~GenStack(){
   cout << "Stack Destructed." << endl;
-  delete code;
+  delete code; //deletes code
 }
 
 template <class T>
 void GenStack<T>::push(T data){
-    ListNode<T> *node = new ListNode<T>(data);
-    if(isEmpty()){
-        top = node;
+    ListNode<T> *node = new ListNode<T>(data); 
+    if(isEmpty()){ //checks if our Stack is empty
+        top = node; //if it is, the top is simply the node
     }
     else{
-        node->next = top;
-        top = node;
+        node->next = top; //the stack is not empty,
+        top = node; //top becomes the node, and top->next was what top previously was
     }
-    size++;
-    code->insertFront(data);
+    size++; //size increaserd
+    code->insertFront(data); //main linkedlist "code" has the data inserted into the list
 }
 
 template <class T>
 T GenStack<T>::pop(){
 
-  if(isEmpty()){
+  if(isEmpty()){ //if empty, error
     throw runtime_error("stack is empty");
   }
   
-  top = top->next;
-  T rem = code->removeFront();
+  top = top->next; //top becomes top->next
+  T rem = code->removeFront(); //T rem is a template for whichever type it may be, and has the value of removeFront from code.
   size--;
   return rem;
 }
@@ -47,7 +49,7 @@ T GenStack<T>::peek(){
     throw runtime_error("stack is empty");
   }
 
-  return top->data;
+  return top->data; //simply shows the tops data
 }
 
 template <class T>
