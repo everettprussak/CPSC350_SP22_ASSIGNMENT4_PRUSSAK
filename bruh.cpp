@@ -33,24 +33,43 @@ template <class T>
 string Analyze<T>::delimeter(string contents){
     GenStack<char> *stack = new GenStack<char>(); //stack being used 
     int par=0, brac=0, sci=0; //counters for each individual first part for the bracket family
-    int comm1=0, pos=-1, temp=-2;
-    bool comment = false;
-    string doe = "";
+    int single=0, doub=0, comm1=0, pos=-1, temp=-1;
 
     for(char x: contents){
-        pos = pos + 1;
-        if(x=='/'){ //checks comments and ignores if "//" is in place
-            if(temp == pos){
-                comment = true;
-                temp = -2;
+        pos++;
+        if(x=='\''||x=='\"'||x=='\\'){
+            if(x=='\''){
+                if(single>0){
+                    single--;
+                }
+                else{
+                    single++;
+                }
             }
-            else{
-                temp = pos+1;
+            else if(x=='\\'){
+                if(pos==temp-1){
+                    comm1 = 1;
+                }
+                else{
+                    temp = pos;
+                }
+            }
+            else if(x=='\"'){
+                if(doub>0){
+                    doub--;
+                }
+                else{
+                    doub++;
+                }
             }
         }
 
-        else if((x=='('||x=='{'||x=='[') && comment==false){
-           // cout << count << " : " << x << endl;
+        else if(doub>0 || single>0 || (comm1>0 && x!='\n')){
+            continue;
+        }
+
+        else if(x=='('||x=='{'||x=='['){
+            cout << count << " : " << x << endl;
             stack->push(x);
             if(x=='('){
                 par++; //( is added to stack, par is incremented
@@ -65,10 +84,13 @@ string Analyze<T>::delimeter(string contents){
         
         else if(x=='\n'){
             count++; //newline allow for the count to be incremented,
-            comment = false;
+            if(comm1>0){
+                temp = 0;
+                comm1 = 0;
+            }
         }
 
-        else if(x=='}' && comment==false){ //}, ], ) all have their own else if statement, but do the same overall thing, just in different order to secure correctness.
+        else if(x=='}'){ //}, ], ) all have their own else if statement, but do the same overall thing, just in different order to secure correctness.
             if(stack->isEmpty()==false){
                 if(stack->peek()=='{'){
                     stack->pop(); //was right next to their bracket "buddy" and simply pops it from the stack
@@ -93,7 +115,7 @@ string Analyze<T>::delimeter(string contents){
             }
         }
 
-        else if (x==']' && comment==false){
+        else if (x==']'){
             if(stack->isEmpty()==false){
                 if(stack->peek()=='['){
                     stack->pop();
@@ -118,7 +140,7 @@ string Analyze<T>::delimeter(string contents){
             }
         }
 
-        else if(x==')' && comment==false){
+        else if(x==')'){
             if(stack->isEmpty()==false){
                 if(stack->peek()=='('){
                     stack->pop();
