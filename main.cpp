@@ -3,7 +3,10 @@
 
 int main(int args, char** argv){
 
-
+    if(args!=2){ //checks for exactly one file with assigment4.o
+        cout << "Enter exactly 1 File!" << endl;
+        return -1;
+    }
 //filename gets text from the command line
     string filename = argv[1];
     Analyze<char> *a = new Analyze<char>(filename); //a sends our filename to analyzer class
